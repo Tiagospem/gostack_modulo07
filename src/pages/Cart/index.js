@@ -4,8 +4,9 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as CartActions from '../../store/modules/cart/actions';
 import {Container, ProductTable, Total} from './styles';
+import {formatPrice} from '../../util/format';
 
-function Cart({ cart, removeFromCart, updateAmount }) {
+function Cart({ cart, removeFromCart, updateAmount, total }) {
 
   function increment(product){
     updateAmount(product.id, product.amount + 1);
@@ -49,7 +50,7 @@ function Cart({ cart, removeFromCart, updateAmount }) {
                 </div>
               </td>
               <td>
-                <strong>R$250,00</strong>
+                <strong>{product.subTotal}</strong>
               </td>
               <td>
                 <button type="button">
@@ -68,7 +69,7 @@ function Cart({ cart, removeFromCart, updateAmount }) {
         <button type="button">Finalizar Pedido</button>
         <Total>
           <span>TOTAL</span>
-          <strong>R$ 12521,00</strong>
+          <strong>{total}</strong>
         </Total>
       </footer>
     </Container>
@@ -76,7 +77,15 @@ function Cart({ cart, removeFromCart, updateAmount }) {
 }
 
 const mapStateToProps = state => ({
-  cart: state.cart,
+  // cart: state.cart,
+  cart: state.cart.map(product => ({
+    ...product,
+    subTotal: formatPrice(product.price * product.amount)
+  })),
+  //https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
+  total: formatPrice(state.cart.reduce((total, product) => {
+    return total + product.price * product.amount;
+  }, 0))
 });
 
 const mapDispatchToProps = dispatch =>
