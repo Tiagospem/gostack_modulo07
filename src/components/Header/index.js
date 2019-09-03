@@ -11,11 +11,13 @@ function Header({ cartSize }) {
       <Link to="/">
         <img src={Logo} alt="Rocketshoes" />
       </Link>
-      <Cart to="/">
+      <Cart to="/cart">
         <div>
           <strong>Meu Carrinho</strong>
           <span>
-            {cartSize} itens
+            {cartSize}
+            {' '}
+itens
           </span>
         </div>
         <MdShoppingBasket size={36} color="#fff" />
