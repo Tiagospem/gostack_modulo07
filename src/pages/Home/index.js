@@ -28,6 +28,7 @@ class Index extends Component {
 
   render() {
     const {products} = this.state;
+    const {amount} = this.props;
     return (
       <ProductList>
         {products.map(product => (
@@ -39,8 +40,7 @@ class Index extends Component {
               <div>
                 <MdAddShoppingCart size={16} color="#fff" />
                 {' '}
-                {' '}
-3
+                {amount[product.id] || 0}
               </div>
               <span>Adicionar ao Carrinho</span>
             </button>
@@ -52,5 +52,10 @@ class Index extends Component {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(CartActions, dispatch);
-
-export default connect(null, mapDispatchToProps)(Index);
+const mapStateToProps = state => ({
+  amount: state.cart.reduce((amount, product) => {
+    amount[product.id] = product.amount;
+    return amount;
+  }, {}),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Index);
