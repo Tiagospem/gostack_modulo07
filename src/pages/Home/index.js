@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {MdAddShoppingCart} from 'react-icons/md';
 import {ProductList} from './styles';
 import api from '../../services/api';
@@ -18,6 +19,14 @@ class Index extends Component {
     this.setState({products: data});
   };
 
+  handleAddProduct = product => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ADD_TO_CART',
+      product,
+    })
+  };
+
   render() {
     const {products} = this.state;
     return (
@@ -27,7 +36,7 @@ class Index extends Component {
             <img src={product.image} alt={product.title} />
             <strong>{product.title}</strong>
             <span>{product.priceFormated}</span>
-            <button type="button">
+            <button type="button" onClick={() => this.handleAddProduct(product)}>
               <div>
                 <MdAddShoppingCart size={16} color="#fff" />
                 {' '}
@@ -42,4 +51,4 @@ class Index extends Component {
   }
 }
 
-export default Index;
+export default connect()(Index);
