@@ -82,7 +82,7 @@ const mapStateToProps = state => ({
     ...product,
     subTotal: formatPrice(product.price * product.amount)
   })),
-  //https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
+  // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
   total: formatPrice(state.cart.reduce((total, product) => {
     return total + product.price * product.amount;
   }, 0))
