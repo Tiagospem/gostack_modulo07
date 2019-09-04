@@ -17,11 +17,14 @@
     "react/prop-types": ["warn"],
     "no-return-assign": ["off"],
     "no-param-reassign": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "no-console": ["error", {
       "allow": ["tron"]
     }]
   },
   "plugins": [
-    "jsx-a11y"
+    "jsx-a11y",
+    "react-hooks"
   ]
 }
