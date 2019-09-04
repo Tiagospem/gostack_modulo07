@@ -1,13 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {MdAddShoppingCart} from 'react-icons/md';
-import {bindActionCreators} from 'redux';
 import * as CartActions from '../../store/modules/cart/actions';
 import {ProductList} from './styles';
 import api from '../../services/api';
 import { formatPrice } from '../../util/format'
 
-function Index({ amount, addToCartRequest }) {
+function Index() {
+
+  const amount = useSelector(state => state.cart.reduce((am, product) => {
+    am[product.id] = product.amount;
+    return am;
+  }, {}));
+
+  const hookDispach = useDispatch();
 
   const [products, setProducts] = useState([]);
 
@@ -25,7 +31,7 @@ function Index({ amount, addToCartRequest }) {
   }, []);
 
   function handleAddProduct(id) {
-    addToCartRequest(id);
+    hookDispach(CartActions.addToCartRequest(id));
   }
   return (
     <ProductList>
@@ -47,12 +53,4 @@ function Index({ amount, addToCartRequest }) {
     </ProductList>
   );
 }
-
-const mapDispatchToProps = dispatch => bindActionCreators(CartActions, dispatch);
-const mapStateToProps = state => ({
-  amount: state.cart.reduce((amount, product) => {
-    amount[product.id] = product.amount;
-    return amount;
-  }, {}),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Index);
+export default Index;
